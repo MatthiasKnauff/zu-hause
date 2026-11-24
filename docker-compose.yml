@@ -1,0 +1,23 @@
+# Vorlage für Test- und Produktivserver.
+# Image und Umgebung trägt die Pipeline ein; HOST_PORT und die übrigen Variablen kommen aus dem Portainer-Stack.
+services:
+  app:
+    image: ghcr.io/matthiasknauff/zu-hause:test-d744aaf
+    container_name: zu-hause-test
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT}:8000"
+    environment:
+      APP_ENV: test
+      TZ: Europe/Berlin
+    volumes:
+      - daten:/data
+
+volumes:
+  daten:
+    name: ${VOLUME_NAME}
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${DATA_PATH}
